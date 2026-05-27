@@ -1,0 +1,24 @@
+# Secrets — never commit
+.env
+
+# Generated outputs — large and transient
+output/
+cv/tailored/
+cv/radhika_resume.pdf
+
+# Job description downloads — transient, re-scannable
+jds/
+
+# Runtime logs
+logs/
+
+# Dependencies (if career-ops is cloned inside this repo)
+node_modules/
+career-ops/
+job-apply-plugin/
+
+# Claude Code local settings
+.claude/
+
+# macOS
+.DS_Store
