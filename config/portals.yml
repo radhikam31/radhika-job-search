@@ -1,128 +1,289 @@
-# Job portals and companies to scan daily
+# Job portals, search queries, and sponsor whitelist
 # career-ops /career-ops-scan reads this file
+# scripts/search.sh uses sponsor_whitelist for pre-filtering
 
-# Job board search queries (Greenhouse, Ashby, Lever, Wellfound)
-search_queries:
-  - "entry level data analyst San Jose"
-  - "entry level business analyst Bay Area"
-  - "junior data analyst remote"
-  - "junior business analyst California"
-  - "associate analyst San Jose"
-  - "data analyst new grad 2026"
-  - "business analyst new grad 2026"
-  - "operations analyst entry level"
-  - "marketing analyst entry level Bay Area"
-  - "product analyst entry level"
-  - "BI analyst entry level"
-  - "reporting analyst entry level California"
-  - "financial analyst entry level Bay Area"
-  - "SQL analyst entry level"
-  - "Tableau analyst entry level"
+# ── Search strategy ────────────────────────────────────────────────────────────
+# Pre-filter order (zero cost until step 4):
+#   1. Run one WebSearch → collect title + company only
+#   2. Filter: title must match target_role_keywords (local, free)
+#   3. Filter: company must appear in sponsor_whitelist OR tier (local, free)
+#   4. Only then: fetch full JD (costs API call)
+#   5. Score and log
+#
+# This reduces JD fetches by ~70% vs. fetching everything blindly.
 
-# Tech companies with strong entry-level analyst pipelines
+# ── LinkedIn search queries (primary source) ───────────────────────────────────
+# Optimized for US-wide, entry-level, sponsorship-friendly
+# Run one query per session — pick the first that returns 10+ fresh results
+linkedin_queries:
+  primary:
+    - "data analyst entry level new grad 2026 SQL Python"
+    - "business analyst entry level new grad 2026 SQL"
+    - "operations analyst entry level 2026 SQL Python"
+    - "product analyst entry level 2026 SQL"
+    - "BI analyst entry level 2026 Tableau Power BI"
+  fallback:
+    - "associate analyst SQL Python 2026 United States"
+    - "junior data analyst SQL Tableau 2026"
+    - "analytics associate entry level 2026"
+
+# ── Hard title filter (check before any fetch) ────────────────────────────────
+# Reject immediately if title contains any of these
+reject_title_keywords:
+  - senior
+  - lead
+  - manager
+  - director
+  - principal
+  - staff
+  - head of
+  - vp
+  - vice president
+  - intern          # already graduated
+  - contract        # prefer FTE
+
+# ── Hard experience filter (check in JD snippet if visible) ───────────────────
+reject_experience_phrases:
+  - "3+ years"
+  - "3 or more years"
+  - "4+ years"
+  - "5+ years"
+  - "minimum 3 years"
+  - "at least 3 years"
+  - "no sponsorship"
+  - "no visa sponsorship"
+  - "will not sponsor"
+  - "unable to sponsor"
+  - "authorization to work in the U.S. is a precondition"
+  - "US citizens only"
+  - "green card holders only"
+
+# ── Sponsor whitelist ──────────────────────────────────────────────────────────
+# Sources: H-1B LCA filings FY2025 via myvisajobs.com
+# Tier 1 = tech companies with direct entry-level programs
+# Tier 2 = staffing firms that place candidates at client companies (high volume)
+# Tier 3 = consulting/services firms
+# Only fetch JD if company appears in any tier OR is unrecognized (flag for review)
+
+sponsor_whitelist:
+  tier1_tech:
+    # Data Analyst sponsors
+    - Meta Platforms
+    - Stripe
+    - Fetch Rewards
+    - Comscore
+    - Google
+    - Barclays
+    - Salesforce
+    - Adobe
+    - Cisco
+    - ServiceNow
+    - Intuit
+    - PayPal
+    - LinkedIn
+    - Zoom
+    - Databricks
+    - Snowflake
+    - Atlassian
+    - IBM
+    - Figma
+    - Notion
+    - Rippling
+    - Amplitude
+    - Brex
+    - Carta
+    - Gusto
+    - Workday
+    - Box
+    - eBay
+    - Splunk
+    - Zestfinance
+
+  tier2_staffing:
+    # High-volume H-1B sponsors — place candidates at client companies
+    # Apply directly through their portals; they handle H-1B paperwork
+    - Iconma
+    - Insight Global
+    - Ascendion
+    - Collabera         # former name of Ascendion
+    - Populus Group
+    - Compunnel Software Group
+    - Compunnel
+    - Citiustech
+    - CitiusTech
+    - Beaconfire Staffing Solutions
+    - Pyramid Consulting
+    - Inrika
+    - Visionet Systems
+    - Zion Cloud Solutions
+    - Coforge
+    - Precision Technologies
+    - SLK America
+    - iSite Technologies
+    - Systechcorp
+    - Techsemble
+    - Epitec
+    - Astir IT Solutions
+    - Asta CRS
+    - PeopleNtech
+    - Firefly Pros
+    - Datasync
+    - Atos Syntel
+    - Nagarro
+    - Cyberthink
+    - R Systems
+    - American Technology Consulting
+    - Infostretch
+
+  tier3_consulting:
+    - Tata Consultancy Services
+    - TCS
+    - Tech Mahindra
+    - Tech Mahindra Americas
+    - Deloitte
+    - EY
+    - KPMG
+    - Accenture
+    - McKinsey
+    - PwC
+    - BCG
+    - Midland Credit Management
+    - Ancile
+
+# ── Direct company portals to scan ────────────────────────────────────────────
 companies_tech:
   - name: Salesforce
     portal: https://careers.salesforce.com
     type: greenhouse
+    tier: 1
   - name: Adobe
     portal: https://careers.adobe.com
     type: greenhouse
+    tier: 1
   - name: Cisco
     portal: https://jobs.cisco.com
     type: workday
+    tier: 1
   - name: ServiceNow
     portal: https://careers.servicenow.com
     type: greenhouse
-  - name: Splunk
-    portal: https://www.splunk.com/en_us/careers.html
-    type: greenhouse
+    tier: 1
   - name: Intuit
     portal: https://jobs.intuit.com
     type: greenhouse
+    tier: 1
   - name: PayPal
     portal: https://careers.pypl.com
     type: workday
+    tier: 1
   - name: eBay
     portal: https://careers.ebayinc.com
     type: greenhouse
+    tier: 1
   - name: LinkedIn
     portal: https://careers.linkedin.com
     type: greenhouse
+    tier: 1
   - name: Zoom
     portal: https://careers.zoom.us
     type: greenhouse
-  - name: Box
-    portal: https://careers.box.com
-    type: greenhouse
-  - name: Workday
-    portal: https://careers.workday.com
-    type: workday
+    tier: 1
   - name: Databricks
     portal: https://www.databricks.com/company/careers
     type: greenhouse
+    tier: 1
   - name: Snowflake
     portal: https://careers.snowflake.com
     type: greenhouse
+    tier: 1
   - name: Atlassian
     portal: https://www.atlassian.com/company/careers
     type: greenhouse
+    tier: 1
+  - name: Figma
+    portal: https://www.figma.com/careers
+    type: greenhouse
+    tier: 1
+  - name: Stripe
+    portal: https://stripe.com/jobs
+    type: greenhouse
+    tier: 1
 
-# Startups and growth-stage (more likely entry-level openings)
 companies_startup:
   - name: Rippling
     portal: https://www.rippling.com/careers
     type: ashby
+    tier: 1
   - name: Amplitude
     portal: https://amplitude.com/careers
     type: greenhouse
-  - name: Mixpanel
-    portal: https://mixpanel.com/careers
-    type: greenhouse
-  - name: Heap
-    portal: https://heap.io/careers
-    type: greenhouse
-  - name: Segment (Twilio)
-    portal: https://www.twilio.com/en-us/company/jobs
-    type: greenhouse
+    tier: 1
   - name: Brex
     portal: https://www.brex.com/careers
     type: ashby
+    tier: 1
   - name: Carta
     portal: https://carta.com/careers
     type: greenhouse
+    tier: 1
   - name: Gusto
     portal: https://gusto.com/about/careers
     type: greenhouse
+    tier: 1
   - name: Notion
     portal: https://www.notion.so/careers
     type: ashby
-  - name: Figma
-    portal: https://www.figma.com/careers
+    tier: 1
+  - name: Fetch Rewards
+    portal: https://fetch.com/careers
     type: greenhouse
+    tier: 1
 
-# Consulting and analytics firms
 companies_consulting:
   - name: Deloitte
-    portal: https://www2.deloitte.com/us/en/careers.html
+    portal: https://apply.deloitte.com
     type: workday
+    tier: 3
   - name: EY
     portal: https://careers.ey.com
     type: workday
+    tier: 3
   - name: KPMG
     portal: https://home.kpmg/us/en/home/careers.html
     type: workday
+    tier: 3
   - name: Accenture
     portal: https://www.accenture.com/us-en/careers
     type: workday
-  - name: McKinsey
-    portal: https://www.mckinsey.com/careers
-    type: greenhouse
+    tier: 3
+  - name: TCS
+    portal: https://ibegin.tcs.com/iBegin
+    type: custom
+    tier: 3
 
-# Direct job boards (in addition to company portals)
+# ── Staffing firm portals (tier 2 — high H-1B volume) ─────────────────────────
+companies_staffing:
+  - name: Insight Global
+    portal: https://insightglobal.com/jobs
+    type: custom
+    tier: 2
+  - name: Iconma
+    portal: https://www.iconma.com/jobs
+    type: custom
+    tier: 2
+  - name: Ascendion
+    portal: https://ascendion.com/careers
+    type: greenhouse
+    tier: 2
+  - name: Compunnel
+    portal: https://www.compunnel.com/careers
+    type: custom
+    tier: 2
+
+# ── Job boards ─────────────────────────────────────────────────────────────────
 job_boards:
-  - linkedin
-  - greenhouse
-  - ashby
-  - lever
-  - wellfound
-  - indeed
+  - linkedin     # primary — structured snippets, minimal fetches
+  - greenhouse   # fallback
+  - ashby        # fallback
+  - lever        # fallback
+  - wellfound    # startup-focused
