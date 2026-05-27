@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.radhika.jobsearch</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/Users/radhikamandhanya/Job_Application_Project/scripts/daily_run.sh</string>
+  </array>
+
+  <!-- Runs every day at 6:00 AM -->
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key>
+    <integer>6</integer>
+    <key>Minute</key>
+    <integer>0</integer>
+  </dict>
+
+  <key>StandardOutPath</key>
+  <string>/Users/radhikamandhanya/Job_Application_Project/logs/launchd-stdout.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/radhikamandhanya/Job_Application_Project/logs/launchd-stderr.log</string>
+
+  <!-- Run even if the machine was asleep at 6 AM -->
+  <key>RunAtLoad</key>
+  <false/>
+</dict>
+</plist>
