@@ -14,7 +14,7 @@ ERROR_LOG="$LOG_DIR/errors_${DATE}.log"
 
 # Load environment
 if [ -f "$REPO_DIR/.env" ]; then
-  export $(grep -v '^#' "$REPO_DIR/.env" | xargs)
+  set -a && source "$REPO_DIR/.env" && set +a
 else
   echo "ERROR: .env file not found. Run: cp .env.example .env and fill in values." | tee "$ERROR_LOG"
   exit 1
