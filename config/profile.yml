@@ -1,0 +1,111 @@
+# Radhika's candidate profile
+# Used by career-ops for evaluation and job-apply-plugin for form filling
+
+personal:
+  name: Radhika Mandhanya
+  email: radhika.mandhanya2004@gmail.com
+  phone: "(408) 581-1963"
+  location: San Jose, CA 95112
+  linkedin: https://linkedin.com/in/radhikamandhanya   # update with real URL
+  tableau_public: https://public.tableau.com/           # update with real URL
+  github: ""                                            # add if applicable
+
+education:
+  degree: BS Business Administration
+  concentration: Business Analytics
+  minor: Computer Science
+  university: San Jose State University
+  gpa: "3.67"
+  graduation: May 2026
+
+target_roles:
+  primary:
+    - Data Analyst
+    - Business Analyst
+    - Operations Analyst
+    - Marketing Analyst
+    - Product Analyst
+    - BI Analyst
+    - Reporting Analyst
+  stretch:
+    - Financial Analyst
+    - Junior Data Engineer
+
+search:
+  location_preference: Anywhere in the United States / Remote
+  max_commute_miles: 40
+  relocation: true
+  relocation_scope: US only
+  us_only: true
+  work_authorization: F-1 OPT — requires H-1B sponsorship after OPT period ends
+  visa_status: F-1 OPT
+  requires_sponsorship: true
+  sponsorship_type: H-1B
+
+compensation:
+  salary_min: 65000
+  salary_max: 85000
+  salary_display: "$65,000–$80,000"
+  negotiable: true
+
+application_defaults:
+  years_experience: "0-1"
+  currently_employed: true
+  available_start: "2 weeks notice / May 2026 graduation"
+  willing_to_relocate: true
+
+# These are used to auto-fill EEO/optional fields
+# Leave blank if you prefer not to answer
+eeo:
+  gender: ""
+  ethnicity: ""
+  disability: ""
+  veteran_status: ""
+
+keywords:
+  must_match_any:
+    - data analyst
+    - business analyst
+    - operations analyst
+    - marketing analyst
+    - product analyst
+    - BI analyst
+    - reporting analyst
+    - financial analyst
+    - data engineer
+  reject_if_contains:
+    - senior
+    - lead
+    - manager
+    - director
+    - principal
+    - "5+ years"
+    - "3+ years"
+    - "4+ years"
+    - security clearance
+    # Visa sponsorship hard rejects — any of these phrases = auto-disqualify
+    - "no sponsorship"
+    - "no visa sponsorship"
+    - "will not sponsor"
+    - "unable to sponsor"
+    - "cannot sponsor"
+    - "sponsorship not available"
+    - "must be authorized to work in the US"
+    - "must be authorized to work in the United States"
+    - "US citizens and permanent residents only"
+    - "US citizens only"
+    - "citizens and green card holders only"
+    - "green card holders only"
+    - "no OPT"
+    - "no CPT"
+    - "no F-1"
+  sponsorship_signals_positive:
+    # Phrases that confirm sponsorship is available — strong positive signal
+    - "visa sponsorship"
+    - "H-1B sponsorship"
+    - "H1B sponsorship"
+    - "we sponsor visas"
+    - "sponsorship available"
+    - "OPT welcome"
+    - "OPT/CPT welcome"
+    - "international students welcome"

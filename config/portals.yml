@@ -1,0 +1,128 @@
+# Job portals and companies to scan daily
+# career-ops /career-ops-scan reads this file
+
+# Job board search queries (Greenhouse, Ashby, Lever, Wellfound)
+search_queries:
+  - "entry level data analyst San Jose"
+  - "entry level business analyst Bay Area"
+  - "junior data analyst remote"
+  - "junior business analyst California"
+  - "associate analyst San Jose"
+  - "data analyst new grad 2026"
+  - "business analyst new grad 2026"
+  - "operations analyst entry level"
+  - "marketing analyst entry level Bay Area"
+  - "product analyst entry level"
+  - "BI analyst entry level"
+  - "reporting analyst entry level California"
+  - "financial analyst entry level Bay Area"
+  - "SQL analyst entry level"
+  - "Tableau analyst entry level"
+
+# Tech companies with strong entry-level analyst pipelines
+companies_tech:
+  - name: Salesforce
+    portal: https://careers.salesforce.com
+    type: greenhouse
+  - name: Adobe
+    portal: https://careers.adobe.com
+    type: greenhouse
+  - name: Cisco
+    portal: https://jobs.cisco.com
+    type: workday
+  - name: ServiceNow
+    portal: https://careers.servicenow.com
+    type: greenhouse
+  - name: Splunk
+    portal: https://www.splunk.com/en_us/careers.html
+    type: greenhouse
+  - name: Intuit
+    portal: https://jobs.intuit.com
+    type: greenhouse
+  - name: PayPal
+    portal: https://careers.pypl.com
+    type: workday
+  - name: eBay
+    portal: https://careers.ebayinc.com
+    type: greenhouse
+  - name: LinkedIn
+    portal: https://careers.linkedin.com
+    type: greenhouse
+  - name: Zoom
+    portal: https://careers.zoom.us
+    type: greenhouse
+  - name: Box
+    portal: https://careers.box.com
+    type: greenhouse
+  - name: Workday
+    portal: https://careers.workday.com
+    type: workday
+  - name: Databricks
+    portal: https://www.databricks.com/company/careers
+    type: greenhouse
+  - name: Snowflake
+    portal: https://careers.snowflake.com
+    type: greenhouse
+  - name: Atlassian
+    portal: https://www.atlassian.com/company/careers
+    type: greenhouse
+
+# Startups and growth-stage (more likely entry-level openings)
+companies_startup:
+  - name: Rippling
+    portal: https://www.rippling.com/careers
+    type: ashby
+  - name: Amplitude
+    portal: https://amplitude.com/careers
+    type: greenhouse
+  - name: Mixpanel
+    portal: https://mixpanel.com/careers
+    type: greenhouse
+  - name: Heap
+    portal: https://heap.io/careers
+    type: greenhouse
+  - name: Segment (Twilio)
+    portal: https://www.twilio.com/en-us/company/jobs
+    type: greenhouse
+  - name: Brex
+    portal: https://www.brex.com/careers
+    type: ashby
+  - name: Carta
+    portal: https://carta.com/careers
+    type: greenhouse
+  - name: Gusto
+    portal: https://gusto.com/about/careers
+    type: greenhouse
+  - name: Notion
+    portal: https://www.notion.so/careers
+    type: ashby
+  - name: Figma
+    portal: https://www.figma.com/careers
+    type: greenhouse
+
+# Consulting and analytics firms
+companies_consulting:
+  - name: Deloitte
+    portal: https://www2.deloitte.com/us/en/careers.html
+    type: workday
+  - name: EY
+    portal: https://careers.ey.com
+    type: workday
+  - name: KPMG
+    portal: https://home.kpmg/us/en/home/careers.html
+    type: workday
+  - name: Accenture
+    portal: https://www.accenture.com/us-en/careers
+    type: workday
+  - name: McKinsey
+    portal: https://www.mckinsey.com/careers
+    type: greenhouse
+
+# Direct job boards (in addition to company portals)
+job_boards:
+  - linkedin
+  - greenhouse
+  - ashby
+  - lever
+  - wellfound
+  - indeed

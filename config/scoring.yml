@@ -1,0 +1,122 @@
+# Job scoring configuration
+# career-ops uses these weights when evaluating job fit
+# Weighted average must be >= minimum_score to proceed
+
+minimum_score: 4.0
+
+# ── Hard gates (evaluated BEFORE scoring) ─────────────────────────────────────
+# Any hard gate failure = immediate disqualify. Job is logged as "skipped" with
+# the gate name as the reason. No score is computed.
+hard_gates:
+  visa_sponsorship:
+    required: true
+    # DISQUALIFY if any reject phrase appears in the JD (case-insensitive)
+    reject_phrases:
+      - "no sponsorship"
+      - "no visa sponsorship"
+      - "will not sponsor"
+      - "unable to sponsor"
+      - "cannot sponsor"
+      - "sponsorship not available"
+      - "must be authorized to work in the us"
+      - "must be authorized to work in the united states"
+      - "us citizens and permanent residents only"
+      - "us citizens only"
+      - "citizens and green card holders only"
+      - "green card holders only"
+      - "no opt"
+      - "no f-1"
+    # PASS if any positive phrase appears (explicit sponsorship offered)
+    # UNCERTAIN if neither appears — flag for human review, do NOT auto-apply
+    positive_phrases:
+      - "visa sponsorship"
+      - "h-1b sponsorship"
+      - "h1b sponsorship"
+      - "we sponsor visas"
+      - "sponsorship available"
+      - "opt welcome"
+      - "international students welcome"
+    # What to do when the JD is silent on sponsorship
+    if_silent: flag_for_review   # options: flag_for_review | reject | proceed
+    silent_note: "JD does not mention sponsorship. Flag for Radhika to verify before applying."
+
+dimensions:
+  role_title_match:
+    weight: 0.15
+    description: Does the job title match one of Radhika's target roles?
+    scoring_guide:
+      5: Exact match (Data Analyst, Business Analyst, etc.)
+      4: Close match (Associate Analyst, Strategy Analyst, Insights Analyst)
+      3: Partial match (Analyst in a tangential function)
+      2: Stretch (something analyst-adjacent but not core)
+      1: Poor match
+
+  skill_overlap:
+    weight: 0.25
+    description: How many of Radhika's core skills appear in the JD?
+    scoring_guide:
+      5: 8+ core skills match (SQL, Python, Tableau, etc.)
+      4: 5-7 core skills match
+      3: 3-4 core skills match
+      2: 1-2 core skills match
+      1: No meaningful skill overlap
+
+  experience_level:
+    weight: 0.20
+    description: Is this genuinely entry-level (0-2 years required)?
+    scoring_guide:
+      5: Explicitly entry-level, new grad, or 0-1 years
+      4: 0-2 years required or preferred
+      3: 1-3 years (borderline — flag for review)
+      2: 2-4 years (likely to be screened out)
+      1: 3+ years required (skip)
+
+  location_fit:
+    weight: 0.10
+    description: Is the role in the US? Radhika is open to relocation anywhere in the United States.
+    scoring_guide:
+      5: San Jose / Bay Area / fully remote
+      4: Major US tech hub (Seattle, NYC, Austin, Boston, Chicago, Denver)
+      3: Any other US location (willing to relocate)
+      2: US remote only — no in-person option anywhere
+      1: Outside the United States
+
+  company_quality:
+    weight: 0.10
+    description: Brand recognition, growth stage, stability, and culture fit
+    scoring_guide:
+      5: Top-tier tech, consulting, or high-growth unicorn
+      4: Solid mid-market company or known brand
+      3: Smaller company with good signals
+      2: Unknown company, limited public info
+      1: Flags present (no Glassdoor, suspicious posting)
+
+  compensation:
+    weight: 0.10
+    description: Is comp in or near the $65K-$85K target range?
+    scoring_guide:
+      5: Listed comp $70K-$90K
+      4: Listed comp $60K-$70K or $90K-$110K
+      3: Comp not listed but company size suggests range
+      2: Comp signals below $55K
+      1: Commission-only, unpaid, or equity-only
+
+  growth_potential:
+    weight: 0.05
+    description: Is there a visible career path or growth signals in the JD?
+    scoring_guide:
+      5: Clear path (mentions promotion, advancement, team growth)
+      4: Some signals (training, mentorship, cross-functional exposure)
+      3: Neutral — standard JD language
+      2: Role sounds siloed or limited
+      1: Contract, temp, or no growth signals
+
+  application_effort:
+    weight: 0.05
+    description: How much effort does this application require?
+    scoring_guide:
+      5: Easy Apply or simple 1-page form
+      4: Standard form (resume + 2-3 questions)
+      3: Cover letter required
+      2: Multiple assessments or long form
+      1: Full case study or extensive pre-screening
