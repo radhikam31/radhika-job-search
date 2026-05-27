@@ -4,6 +4,11 @@
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PASS=true
 
+# Load env if not already set
+if [ -f "$REPO_DIR/.env" ]; then
+  set -a && source "$REPO_DIR/.env" && set +a
+fi
+
 check() {
   local label="$1"
   local condition="$2"
